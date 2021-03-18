@@ -1,0 +1,26 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    app: federated-monitor
+  name: application-monitoring-prometheus
+  namespace: metrics-scrapper
+spec:
+  endpoints:
+  - interval: 30s
+    scrapeTimeout: 30s
+    port: upstream
+    path: /federate
+    honorLabels: true
+    params:
+      'match[]': 
+        - '{__name__=~".+"}'
+    scheme: http
+    bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+  namespaceSelector:
+    matchNames:
+    - redhat-rhoam-middleware-monitoring-operator
+  selector:
+    matchLabels:
+      application-monitoring: 'true'
