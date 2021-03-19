@@ -9,6 +9,9 @@ metadata:
 spec:
   endpoints:
   - interval: 30s
+    relabelings:
+        - replacement: jd
+          targetLabel: osd_cluster
     scrapeTimeout: 30s
     port: upstream
     path: /federate
